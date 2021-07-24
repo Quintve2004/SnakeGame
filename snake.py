@@ -34,14 +34,23 @@ texts.write("Score: 0   Best: 0", align="center", font=("Courier", 18, "normal")
 # Segments (snake body)
 segments = []
 score = 0
+high_score = 0
 
 # Snake Functions
+def highscore():
+    if score > high_score:
+        print("lol {}".format(score))
+        highscore = score
+    
 def stop():
     snake_head.direction = "stop"
     score = 0
     texts.clear()
     texts.write("Score: 0   Best: 0", align="center", font=("Courier", 18, "normal"))
-    
+    for segment in segments:
+            segment.goto(1000,1000)
+
+
 def goUp():
     if snake_head.direction != "down":
         snake_head.direction = "up"
@@ -93,39 +102,32 @@ while True:
     if snake_head.ycor() >= 290:
         snake_head.sety(0)
         snake_head.setx(0)
+        highscore() # change highscore if needed
         stop()
-        
-        for segment in segments:
-            segment.goto(1000,1000)
         segments.clear()
+
     if snake_head.ycor() <= -290:
         snake_head.sety(0)
         snake_head.setx(0)
+        highscore()
         stop()
-
-        for segment in segments:
-            segment.goto(1000,1000)
-        segments.clear()
 
 
     if snake_head.xcor() >= 290:
         snake_head.setx(0)
         snake_head.sety(0)
+        highscore()
         stop()
-        
-        for segment in segments:
-            segment.goto(1000,1000)
+
         segments.clear()
 
     if snake_head.xcor() <= -290:
         snake_head.setx(0)
         snake_head.sety(0)
+        highscore()
         stop()
-        
-        
-        for segment in segments:
-            segment.goto(1000,1000)
-        segments.clear()
+
+
     # Check if Snake eat food
     if snake_head.ycor() == food.ycor() and snake_head.xcor() == food.xcor():
         y = random.randint(-13, 13) * 20
@@ -134,7 +136,7 @@ while True:
         food.goto(y, x) 
         score += 1
         texts.clear()
-        texts.write("Score: {}   Best: 0".format(score), align="center", font=("Courier", 18, "normal"))
+        texts.write("Score: {}   Best: {}".format(score, highscore), align="center", font=("Courier", 18, "normal"))
 
         # Snake Body
         new_segment = turtle.Turtle()
