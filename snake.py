@@ -22,6 +22,9 @@ food.color("red")
 food.shape("circle")
 food.goto(60, 20)
 
+# Segments (snake body)
+segments = []
+
 # Snake Functions
 def stop():
     snake_head.direction = "stop"
@@ -70,27 +73,66 @@ wd.onkeypress(goRight, "Right")
 while True:
     wd.update()
     move()
+
+
     # Border
     if snake_head.ycor() >= 290:
         snake_head.sety(0)
         snake_head.setx(0)
         stop()
+        
+        for segment in segments:
+            segment.goto(1000,1000)
+        segments.clear()
     if snake_head.ycor() <= -290:
         snake_head.sety(0)
         snake_head.setx(0)
         stop()
+
+        for segment in segments:
+            segment.goto(1000,1000)
+        segments.clear()
+
+
     if snake_head.xcor() >= 290:
         snake_head.setx(0)
         snake_head.sety(0)
         stop()
+        
+        for segment in segments:
+            segment.goto(1000,1000)
+        segments.clear()
+
     if snake_head.xcor() <= -290:
         snake_head.setx(0)
         snake_head.sety(0)
         stop()
-
+        
+        
+        for segment in segments:
+            segment.goto(1000,1000)
+        segments.clear()
     # Check if Snake eat food
     if snake_head.ycor() == food.ycor() and snake_head.xcor() == food.xcor():
         y = random.randint(-13, 13) * 20
         x = random.randint(-13, 13) * 20
         print(y, x)
-        food.goto(y, x)
+        food.goto(y, x) 
+
+        # Snake Body
+        new_segment = turtle.Turtle()
+        new_segment.speed(0)
+        new_segment.penup()
+        new_segment.shape("square")
+        new_segment.color("grey")
+        segments.append(new_segment)
+        
+    # move last segment location to 2nd last and 2d last to 3d last and so on
+    for index in range(len(segments)-1, 0, -1): #counts from end to first
+        y = segments[index - 1].ycor()
+        x = segments[index - 1].xcor()
+        segments[index].goto(x, y)
+    if len(segments) > 0:
+        y = snake_head.ycor()
+        x = snake_head.xcor()
+        segments[0].goto(x, y)
