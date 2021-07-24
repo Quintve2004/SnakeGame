@@ -22,12 +22,26 @@ food.color("red")
 food.shape("circle")
 food.goto(60, 20)
 
+# Texts
+texts = turtle.Turtle()
+texts.penup()
+texts.color("black")
+texts.speed(0)
+texts.hideturtle()
+texts.goto(0, 200)
+texts.write("Score: 0   Best: 0", align="center", font=("Courier", 18, "normal"))
+
 # Segments (snake body)
 segments = []
+score = 0
 
 # Snake Functions
 def stop():
     snake_head.direction = "stop"
+    score = 0
+    texts.clear()
+    texts.write("Score: 0   Best: 0", align="center", font=("Courier", 18, "normal"))
+    
 def goUp():
     if snake_head.direction != "down":
         snake_head.direction = "up"
@@ -118,6 +132,9 @@ while True:
         x = random.randint(-13, 13) * 20
         print(y, x)
         food.goto(y, x) 
+        score += 1
+        texts.clear()
+        texts.write("Score: {}   Best: 0".format(score), align="center", font=("Courier", 18, "normal"))
 
         # Snake Body
         new_segment = turtle.Turtle()
